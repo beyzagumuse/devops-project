@@ -30,7 +30,14 @@ services:
     container_name: grafana
     ports:
       - "3000:3000"
-
+    volumes:
+      - ./grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./grafana/provisioning:/etc/grafana/provisioning
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin  # Admin şifresini otomatik olarak ayarlamak için
+    depends_on:
+      - prometheus
+      
   postgres-exporter:
     image: prometheuscommunity/postgres-exporter
     container_name: postgres-exporter
@@ -38,8 +45,11 @@ services:
       DATA_SOURCE_NAME: "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?sslmode=disable"
     ports:
       - "9187:9187"
+    volumes:
+      - ./queries:/etc/postgres_exporter/queries
     depends_on:
       - postgres
+
 
   redis-exporter:
     image: oliver006/redis_exporter
