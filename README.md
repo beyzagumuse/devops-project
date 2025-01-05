@@ -44,6 +44,43 @@ Alternatif olarak, projenin içinde bulunan `scripts/install.sh` dosyasını ça
    docker-compose --version
    ```
 
+
+### Adımlar
+
+1. **Projeyi Klonlayın**:
+
+    ```bash
+    git clone https://github.com/yourusername/devops-project.git
+    cd devops-project
+    ```
+
+2. **Ortam Değişkenlerini Yapılandırın**:
+
+    `.env` dosyasını aşağıdaki gibi oluşturun ve içeriğini kendi gereksinimlerinize göre düzenleyin:
+
+    ```bash
+    POSTGRES_USER=admin
+    POSTGRES_PASSWORD=password
+    POSTGRES_DB=app_db
+    REDIS_PASSWORD=redissecure
+    GRAFANA_USER=admin
+    GRAFANA_PASSWORD=admin
+    ```
+
+3. **Docker Compose ile Servisleri Başlatın**:
+
+    Projeyi başlatmak için aşağıdaki komutu çalıştırın:
+
+    ```bash
+    docker compose up -d
+    ```
+
+    Bu komut, Docker konteynerlerini başlatacak ve gerekli tüm servisleri ayağa kaldıracaktır.
+
+4. **Grafana'ya Erişim**:
+
+    Grafana arayüzüne [http://localhost:3000](http://localhost:3000) adresinden erişebilirsiniz. Varsayılan kullanıcı adı `admin`, şifre ise `admin`'dir.
+
 ---
 
 ## Proje Yapısı
@@ -78,20 +115,55 @@ devops-project/
 Bu projede aşağıdaki servisler kullanılmaktadır:
 
 - **PostgreSQL**: Veritabanı yönetim sistemi. Varsayılan kullanıcı adı `admin`, şifre ise `admin`'dir.
-- **Redis**: Bellek içi veri yapıları sunan, veri önbellekleme servisidir. Varsayılan şifre `admin`'dir.
+- **Redis**: Bellek içi veri yapıları sunan, veri önbellekleme servisidir. Varsayılan şifre `redissecure`'dir.
 - **Prometheus**: İzleme ve metrik toplama aracıdır. Prometheus, verileri toplar ve saklar.
-- **Grafana**: Prometheus'tan gelen metrikleri görselleştiren bir araçtır. Dashboard'lar otomatik olarak yüklenir.
+- **Grafana**: Prometheus'tan gelen metrikleri görselleştiren bir araçtır. Varsayılan kullanıcı adı `admin`, şifre ise `admin`'dir
 
 ---
 
 ## Grafana Dashboardları
 
-Proje başladığında, PostgreSQL ve Redis için otomatik olarak dashboard’lar oluşturulacaktır. Bu dashboard'lar **Prometheus** datasource'u ile entegre olup, her iki servisin izleme verilerini görselleştirir.
+PostgreSQL ve Redis için dashboard’lar oluşturulacaktır. Bu dashboard'lar **Prometheus** datasource'u ile entegre olup, her iki servisin izleme verilerini görselleştirir.
 
 Grafana arayüzünde dashboard'lar aşağıdaki konumda bulunacaktır:
 
 - **PostgreSQL Dashboard**: PostgreSQL veritabanının metriklerini gösterir.
 - **Redis Dashboard**: Redis servisinin metriklerini gösterir.
+
+### Dashboard Yükleme Yöntemleri
+
+#### Yöntem 1: GGrafana UI Kullanarak Dashboard Yüklemek
+
+Grafana üzerinde dashboard'ları manuel olarak da yükleyebilirsiniz. Aşağıdaki adımları izleyerek bir dashboard JSON dosyasını import edebilirsiniz:
+
+1. **Dashboards** menüsüne tıklayın.
+2. **New** butonuna tıklayın ve açılan menüden **Import** seçeneğini seçin.
+3. Şu adımlardan birini gerçekleştirin:
+    - **Dashboard JSON dosyasını yükleyin**.
+    - **Grafana.com dashboard URL veya ID'sini ilgili alana yapıştırın**.
+    - **Dashboard JSON metnini doğrudan metin alanına yapıştırın**.
+4. (Opsiyonel) Dashboard ismini, klasörünü veya UID'sini değiştirin ve dashboard herhangi bir metrik ön eki kullanıyorsa, bunu da belirtin.
+5. Gerekirse bir **data source** seçin. (Proje çalıştırıldığında prometheus data source olarak yüklenmiş olacaktır.)
+6. **Import** butonuna tıklayın.
+
+Bu adımlarla JSON dosyasını manuel olarak yükleyebilir ve Grafana üzerinde dashboard'u kullanabilirsiniz.
+
+#### Yöntem 2: `upload_dashboard.sh` Script'i ile Dashboard Yüklemek
+
+Eğer provisioning ile yükleme yapılmazsa, dashboard'ları yüklemek için bir **bash script** yazdık. Bu script, JSON dosyalarını kullanarak dashboard'ları Grafana'ya yükler.
+
+**Script'i çalıştırmak için aşağıdaki adımları takip edin:**
+
+1. **Grafana'nın çalıştığından emin olun** (Grafana genellikle `http://localhost:3000` adresinde çalışır).
+2. **Dashboard'ları yüklemek için aşağıdaki komutu çalıştırın**:
+
+    ```bash
+    chmod +x grafana/upload_dashboard.sh
+    ./grafana/upload_dashboard.sh
+    ```
+
+Bu komut, `grafana/dashboards` klasöründe yer alan JSON dosyalarını kullanarak PostgreSQL ve Redis dashboard'larını Grafana'ya yükleyecektir.
+
 
 ---
 
