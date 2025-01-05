@@ -132,7 +132,7 @@ Grafana arayüzünde dashboard'lar aşağıdaki konumda bulunacaktır:
 
 ### Dashboard Yükleme Yöntemleri
 
-#### Yöntem 1: GGrafana UI Kullanarak Dashboard Yüklemek
+#### Yöntem 1: Grafana UI Kullanarak Dashboard Yüklemek
 
 Grafana üzerinde dashboard'ları manuel olarak da yükleyebilirsiniz. Aşağıdaki adımları izleyerek bir dashboard JSON dosyasını import edebilirsiniz:
 
@@ -179,12 +179,24 @@ Projede, PostgreSQL ve Redis servislerini CLI üzerinden test etmek için kullan
     ./scripts/test_postgres.sh
     ```
 
+    Veya terminalden aşağıdaki komut ile database'e direkt bağlanabilirsiniz:
+
+    ```bash
+    docker exec -it postgres psql -U admin -d app_db
+    ```
+
 - **Redis Testi**:
 
     Redis ile bağlantıyı test etmek için aşağıdaki komutu kullanabilirsiniz:
 
     ```bash
     ./scripts/test_redis.sh
+    ```
+
+    Veya terminalden aşağıdaki komut ile redis'e direkt bağlanabilirsiniz:
+
+    ```bash
+    docker exec -it redis redis-cli  
     ```
 
 ---
@@ -196,4 +208,5 @@ Projede, PostgreSQL ve Redis servislerini CLI üzerinden test etmek için kullan
 
 ---
 
-**Not**: Eğer herhangi bir sorun ile karşılaşırsanız, lütfen projenin GitHub sayfasında issue açın veya daha fazla destek için buraya geri dönün.
+**Not**: Lütfen dosya yollarını kendi bilgisayarınıdzaki yollar ile değiştiriniz.
+**Not**: Eğer herhangi bir sorun ile karşılaşırsanız, lütfen iletişime geçiniz.
