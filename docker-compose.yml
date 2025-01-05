@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   postgres:
     image: postgres:15
@@ -8,33 +10,46 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
     volumes:
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres_data:/data
     ports:
       - "5432:5432"
 
   redis:
     image: redis:7
     container_name: redis
+    command: ["redis-server", "--requirepass", "${REDIS_PASSWORD}"]
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
     ports:
       - "6379:6379"
+    volumes:
+      - redis_data:/data
 
   prometheus:
     image: prom/prometheus
     container_name: prometheus
     volumes:
-      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml    
+      - prometheus_data:/data
+      - ./prometheus.yml:/monitoring/prometheus.yml
     ports:
       - "9090:9090"
 
   grafana:
     image: grafana/grafana
     container_name: grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_USER}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
     ports:
       - "3000:3000"
     volumes:
+      - grafana_data:/data
       - ./grafana/dashboards:/etc/grafana/provisioning/dashboards
       - ./grafana/provisioning:/etc/grafana/provisioning
-    environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin  # Admin şifresini otomatik olarak ayarlamak için
+      - ./grafana/dashboards:/etc/grafana/dashboards
+      - ./grafana/setup_dashboards.sh:/etc/grafana/setup_dashboards.sh
+    command: /bin/bash /grafana/setup_dashboards.sh && /bin/bash /grafana/run.sh
     depends_on:
       - prometheus
       
@@ -56,10 +71,17 @@ services:
     container_name: redis-exporter
     environment:
       REDIS_ADDR: "redis:6379"
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
     ports:
       - "9121:9121"
     depends_on:
       - redis
+
+volumes:
+  postgres_data:
+  redis_data:
+  prometheus_data:
+  grafana_data:
 
 networks:
   default:
