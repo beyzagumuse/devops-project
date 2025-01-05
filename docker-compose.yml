@@ -49,7 +49,8 @@ services:
       - ./grafana/provisioning:/etc/grafana/provisioning
       - ./grafana/dashboards:/etc/grafana/dashboards
       - ./grafana/setup_dashboards.sh:/etc/grafana/setup_dashboards.sh
-    command: /bin/bash /grafana/setup_dashboards.sh && /bin/bash /grafana/run.sh
+      - ./grafana/upload_dashboards.sh:/etc/grafana/upload_dashboards.sh
+    command: /bin/bash /grafana/upload_dashboards.sh && /bin/bash /grafana/run.sh
     depends_on:
       - prometheus
       

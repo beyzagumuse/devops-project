@@ -1,0 +1,58 @@
+{
+    "dashboard": {
+      "id": null,
+      "uid": null,
+      "title": "Postgres Dashboard",
+      "tags": ["example"],
+      "timezone": "browser",
+      "schemaVersion": 16,
+      "version": 0,
+      "panels": [
+        {
+          "type": "graph",
+          "title": "CPU Usage",
+          "gridPos": {
+            "h": 9,
+            "w": 12,
+            "x": 0,
+            "y": 0
+          },
+          "targets": [
+            {
+              "expr": "rate(process_cpu_seconds_total[5m])",
+              "legendFormat": "CPU Usage",
+              "refId": "A"
+            }
+          ],
+          "datasource": "${DS_PROMETHEUS}",
+          "lines": true,
+          "fill": 1,
+          "linewidth": 2
+        },
+        {
+          "type": "singlestat",
+          "title": "Memory Usage",
+          "gridPos": {
+            "h": 6,
+            "w": 12,
+            "x": 12,
+            "y": 0
+          },
+          "targets": [
+            {
+              "expr": "node_memory_Active_bytes / node_memory_MemTotal_bytes * 100",
+              "refId": "B"
+            }
+          ],
+          "datasource": "${DS_PROMETHEUS}",
+          "format": "percent",
+          "valueFontSize": "80%",
+          "thresholds": "70,90",
+          "colorBackground": true,
+          "colors": ["#299c46", "#f2c96d", "#d44a3a"]
+        }
+      ]
+    },
+    "overwrite": true
+  }
+  
