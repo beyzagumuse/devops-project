@@ -209,4 +209,7 @@ Projede, PostgreSQL ve Redis servislerini CLI üzerinden test etmek için kullan
 ---
 
 **Not**: Lütfen dosya yollarını kendi bilgisayarınıdzaki yollar ile değiştiriniz.
+
+---
+
 **Not**: Eğer herhangi bir sorun ile karşılaşırsanız, lütfen iletişime geçiniz.
