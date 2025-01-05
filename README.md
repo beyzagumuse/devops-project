@@ -107,7 +107,7 @@ devops-project/
     └── test_redis.sh            # Redis testi için kullanılan shell script
 ├── docker-compose.yml           # Docker Compose yapılandırma dosyası
 ├── .env                         # Ortam değişkenleri dosyası
-
+```
 ---
 
 ## Servisler
