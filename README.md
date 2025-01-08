@@ -213,7 +213,7 @@ In the project, there are some shell scripts used to test the PostgreSQL and Red
 
 ---
 
-**Note**: If you encounter any issues, please feel free to contact us.
+**Note**: If you encounter any issues, please feel free to contact me.
 
 ---
 
